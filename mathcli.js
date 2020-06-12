@@ -213,7 +213,7 @@ var rules = [
     {rule:"(a^1) = a",name:"identity ^"},
     {rule:"(a^0) = 1",name:"null ^"},
     {rule:"(a * (a ^ b)) = (a ^ (b+1))",name:"exp *"},
-    {rule:"(D[a+c]) = D[a]",name:"diff constant",requires:"(D[c]) = 0"}
+    {rule:"(D[a+c]) = D[a]",name:"diff constant",require:"(D[c]) = 0"}
 ];
 
 for(var i=0; i<rules.length; i++) {
