@@ -148,15 +148,15 @@ function parse(t) {
             // functions are prefix
             var fn = s.pop();
             var result = {
-                "fn": fn,
-                "a": []
+                fn: fn,
+                a: []
             };
             if(s2.length > 0) {
-                result["op"] = s2[1];
+                result.op = s2[1];
             }
             s2.reverse();
             for(var i=0; i<s2.length; i = i + 2) {
-                result["a"].push(s2[i]);
+                result.a.push(s2[i]);
             }
             s.push(result);
         }
@@ -179,12 +179,12 @@ function parse(t) {
             } else {
                 // Assume that everything associates and is same operator, as we have no op precedences yet
                 var result = {
-                    "op": s2[1],
-                    "a": []
+                    op: s2[1],
+                    a: [],
                 };
                 s2.reverse();
                 for(var i=0; i<s2.length; i = i + 2) {
-                    result["a"].push(s2[i]);
+                    result.a.push(s2[i]);
                 }
                 s.push(result);
             }
@@ -213,8 +213,34 @@ var rules = [
     {rule:"(a^1) = a",name:"identity ^"},
     {rule:"(a^0) = 1",name:"null ^"},
     {rule:"(a * (a ^ b)) = (a ^ (b+1))",name:"exp *"},
-    {rule:"(D[a+c]) = D[a]",name:"diff constant",require:"(D[c]) = 0"}
+    {rule:"D[a+c] = D[a]",name:"diff constant",require:"D[c] = 0"}
 ];
+
+function findMatches(s,ruleSet) {
+    var p = parse(tokenize(s));
+    for(var i=0; i<ruleSet.length; i++) {
+        var r = ruleSet[i];
+        var m = parse(tokenize(r));
+        if(m.op === "=") {
+            var ml = m.a[0];
+            var mr = m.a[1];
+            // match rules to expr -- parens are associative operator:
+            //     (a+b) match (x+y+z)
+            //        (x)+(y+z)
+            //        (x+y)+(z)
+            // focus on an op... what matches?
+            var mismatched = false;
+            if(ml.op && ml.a && p.op && p.a) {
+                
+                for(var j=0; j<ml.a.length; j++) {
+
+                }    
+            }
+        } else {
+
+        }
+    }
+}
 
 for(var i=0; i<rules.length; i++) {
     parse(tokenize(rules[i].rule));
